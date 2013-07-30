@@ -55,14 +55,14 @@ namespace Meteo_Lib
 
         #region Public functions
 
-        MemoryStream UM(Coordinates coord)
+        public MemoryStream UM(Coordinates coord)
         {
             string um = resolveUM(coord);
             string img = getImgUri(um);
             return new MemoryStream(new WebClient().DownloadData(img));
         }
 
-        MemoryStream COAMPS(Coordinates coord)
+        public MemoryStream COAMPS(Coordinates coord)
         {
             string coamps = resolveCOAMPS(coord);
             string img = getImgUri(coamps);

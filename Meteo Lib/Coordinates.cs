@@ -2,15 +2,8 @@
 {
     public struct Coordinates
     {
-        public double NALL { get; set; }
-
-        public double EALL { get; set; }
-
-        public Coordinates()
-        {
-            NALL = 0.0;
-            EALL = 0.0;
-        }
+        public double NALL;
+        public double EALL;
 
         public Coordinates(double NALL, double EALL)
         {

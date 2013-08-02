@@ -6,8 +6,8 @@ namespace Meteo_Lib
 {
     public class Location
     {
-        Uri um;
-        Uri coamps;
+        public Uri UM { get; private set; }
+        public Uri COAMPS { get; private set; }
 
         /// <summary>
         /// Location coordinates
@@ -19,8 +19,8 @@ namespace Meteo_Lib
         internal Location(Coordinates coords, Uri um, Uri coamps)
         {
             this.Coords = coords;
-            this.um = um;
-            this.coamps = coamps;
+            this.UM = um;
+            this.COAMPS = coamps;
         }
 
         public async Task<MemoryStream> Get(Model model)
@@ -29,12 +29,12 @@ namespace Meteo_Lib
             {
                 case Model.UM:
                     {
-                        var result = await Meteo.Download(um);
+                        var result = await Meteo.Download(UM);
                         return result;
                     }
                 case Model.COAMPS:
                     {
-                        var result = await Meteo.Download(coamps);
+                        var result = await Meteo.Download(COAMPS);
                         return result;
                     }
                 default:

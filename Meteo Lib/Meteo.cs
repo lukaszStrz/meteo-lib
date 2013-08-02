@@ -117,7 +117,7 @@ namespace Meteo_Lib
         /// <summary>
         /// Downloads an image from given URI.
         /// </summary>
-        internal static async Task<MemoryStream> Download(Uri uri)
+        public static async Task<MemoryStream> Download(Uri uri)
         {
             var client = new WebClient();
             var data = await client.DownloadDataTaskAsync(uri);

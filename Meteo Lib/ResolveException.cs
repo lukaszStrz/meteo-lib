@@ -2,7 +2,7 @@
 
 namespace Meteo_Lib
 {
-    class ResolveException : Exception
+    public class ResolveException : Exception
     {
         public ResolveException() { }
         public ResolveException(string message) { }

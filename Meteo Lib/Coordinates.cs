@@ -1,14 +1,17 @@
 ﻿namespace Meteo_Lib
 {
-    public struct Coordinates
+    public class Coordinates
     {
-        public double NALL;
-        public double EALL;
+        public double Latitude { get; private set; }
 
-        public Coordinates(double NALL, double EALL)
+        public double Longitude { get; private set; }
+
+        /// <param name="lat">Latitude</param>
+        /// <param name="lng">Longitude</param>
+        public Coordinates(double lat, double lng)
         {
-            this.NALL = NALL;
-            this.EALL = EALL;
+            this.Latitude = lat;
+            this.Longitude = lng;
         }
     }
 }

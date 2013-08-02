@@ -39,8 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="City.cs" />
     <Compile Include="Coordinates.cs" />
+    <Compile Include="Location.cs" />
     <Compile Include="Meteo.cs" />
+    <Compile Include="Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolveException.cs" />
   </ItemGroup>

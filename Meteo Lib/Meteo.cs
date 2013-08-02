@@ -107,7 +107,7 @@ namespace Meteo_Lib
         {
             var um = await Redirect(coords, Model.UM);
             var coamps = await Redirect(coords, Model.COAMPS);
-            return new Location(Image(um, Model.UM), Image(coamps, Model.COAMPS));
+            return new Location(coords, Image(um, Model.UM), Image(coamps, Model.COAMPS));
         }
 
         #endregion
@@ -146,9 +146,15 @@ namespace Meteo_Lib
                     throw new NotImplementedException();
             }
             sb.Append(@"NALL=");
-            sb.Append(coords.Latitude);
+            var lat = coords.Latitude;
+            if (model == Model.COAMPS)
+                lat = Math.Truncate(lat);
+            sb.Append(lat);
             sb.Append(@"&EALL=");
-            sb.Append(coords.Longitude);
+            var lng = coords.Longitude;
+            if (model == Model.COAMPS)
+                lng = Math.Truncate(lng);
+            sb.Append(lng);
 
             var uri = new Uri(sb.ToString());
 

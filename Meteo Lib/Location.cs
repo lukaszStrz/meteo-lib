@@ -16,8 +16,9 @@ namespace Meteo_Lib
 
         private Location() { }
 
-        internal Location(Uri um, Uri coamps)
+        internal Location(Coordinates coords, Uri um, Uri coamps)
         {
+            this.Coords = coords;
             this.um = um;
             this.coamps = coamps;
         }
@@ -27,9 +28,15 @@ namespace Meteo_Lib
             switch (model)
             {
                 case Model.UM:
-                    return await Meteo.Download(um);
+                    {
+                        var result = await Meteo.Download(um);
+                        return result;
+                    }
                 case Model.COAMPS:
-                    return await Meteo.Download(coamps);
+                    {
+                        var result = await Meteo.Download(coamps);
+                        return result;
+                    }
                 default:
                     throw new NotImplementedException();
             }

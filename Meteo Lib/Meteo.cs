@@ -8,8 +8,6 @@ namespace Meteo_Lib
 {
     public static class Meteo
     {
-        #region Public functions
-
         public static async Task<MemoryStream> MainCity(City city, Model model)
         {
             switch (model)
@@ -103,16 +101,13 @@ namespace Meteo_Lib
             }
         }
 
-        public static async Task<Location> GetLocation(Coordinates coords)
+        public static Location GetLocation(Coordinates coords)
         {
-            var um = await Redirect(coords, Model.UM);
-            var coamps = await Redirect(coords, Model.COAMPS);
-            return new Location(coords, Image(um, Model.UM), Image(coamps, Model.COAMPS));
+            //var um = await Redirect(coords, Model.UM);
+            //var coamps = await Redirect(coords, Model.COAMPS);
+            //return new Location(coords, Image(um, Model.UM), Image(coamps, Model.COAMPS));
+            return new Location(coords);
         }
-
-        #endregion
-
-        #region Private functions
 
         /// <summary>
         /// Downloads an image from given URI.
@@ -125,12 +120,22 @@ namespace Meteo_Lib
         }
 
         /// <summary>
+        /// Downloads an image from given URI.
+        /// </summary>
+        public static async Task<MemoryStream> Download(string uri)
+        {
+            var client = new WebClient();
+            var data = await client.DownloadDataTaskAsync(uri);
+            return new MemoryStream(data);
+        }
+
+        /// <summary>
         /// Redirects to get row and col values.
         /// </summary>
         /// <param name="coords">Coordinates</param>
         /// <param name="model">Model</param>
         /// <returns>URI of a meteogram (page, not image!)</returns>
-        private static async Task<Uri> Redirect(Coordinates coords, Model model)
+        internal static async Task<string> Redirect(Coordinates coords, Model model)
         {
             var sb = new StringBuilder();
 
@@ -156,39 +161,28 @@ namespace Meteo_Lib
                 lng = Math.Truncate(lng);
             sb.Append(lng);
 
-            var uri = new Uri(sb.ToString());
-
-            var request = (HttpWebRequest)WebRequest.Create(uri);
+            var request = (HttpWebRequest)WebRequest.Create(sb.ToString());
             var response = await request.GetResponseAsync();
-            return ((HttpWebResponse)response).ResponseUri;
+            return ((HttpWebResponse)response).ResponseUri.AbsoluteUri;
         }
 
-        private static Uri Image(Uri meteogram, Model model)
+        internal static string Image(string meteogram, Model model)
         {
-            var m = meteogram.ToString();
-            if (!m.Contains(@"row=") || !m.Contains(@"col="))
+            if (!meteogram.Contains(@"row=") || !meteogram.Contains(@"col="))
             {
                 throw new ResolveException();
             }
-            string substring = m.Substring(m.IndexOf('?'));
+            string substring = meteogram.Substring(meteogram.IndexOf('?'));
 
-            var sb = new StringBuilder();
             switch (model)
             {
                 case Model.UM:
-                    sb.Append(@"http://www.meteo.pl/um/metco/mgram_pict.php");
-                    break;
+                    return @"http://www.meteo.pl/um/metco/mgram_pict.php" + substring;
                 case Model.COAMPS:
-                    sb.Append(@"http://www.meteo.pl/metco/mgram_pict.php");
-                    break;
+                    return @"http://www.meteo.pl/metco/mgram_pict.php" + substring;
                 default:
                     throw new NotImplementedException();
             }
-            sb.Append(substring);
-
-            return new Uri(sb.ToString());
         }
-
-        #endregion
     }
 }
